@@ -8,6 +8,7 @@
 #include <optional>
 #include <sstream>
 #include <string_view>
+#include <utility>
 
 namespace dechamps_cpplog {
 
@@ -43,7 +44,8 @@ namespace dechamps_cpplog {
 			uintmax_t sizeCheckPeriodBytes = std::max<uintmax_t>(maxSizeBytes / 10, 1);
 		};
 
-		FileLogSink(std::filesystem::path path, Options options = {});
+		FileLogSink(std::filesystem::path path) : FileLogSink(std::move(path), Options{}) {}
+		FileLogSink(std::filesystem::path path, Options options);
 		~FileLogSink();
 
 		void Write(const std::string_view str) override;
@@ -97,7 +99,8 @@ namespace dechamps_cpplog {
 			bool prependThreadId = true;
 		};
 
-		explicit Logger(LogSink* sink, const Options& options = {});
+		explicit Logger(LogSink* sink) : Logger(sink, Options{}) {}
+		explicit Logger(LogSink* sink, const Options& options);
 		~Logger();
 
 		template <typename T> friend Logger&& operator<<(Logger&& lhs, T&& rhs) {

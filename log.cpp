@@ -193,7 +193,7 @@ namespace dechamps_cpplog {
 		auto& stream = enabledState->stream;
 
 		if (options.prependTime) {
-			FILETIME now = { 0 };
+			FILETIME now{};
 			GetSystemTimeAsFileTimeFunction()(&now);
 			stream << FormatFiletimeISO8601(now) << " ";
 		}
